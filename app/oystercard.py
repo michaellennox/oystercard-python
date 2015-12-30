@@ -7,17 +7,16 @@ class Oystercard(object):
     """
 
     MAXIMUM_BALANCE = 90
+    MINIMUM_BALANCE = 1
 
     def __init__(self):
         self.balance = 0
         self.isin_journey = False
 
     def top_up(self, amount):
-        """Adds amount passed as argument to balance.
-
-        Fails if that would take balance over 90"""
+        """Adds amount passed as argument to balance, fails if that would take balance over 90"""
         if self.balance + amount > self.MAXIMUM_BALANCE:
-            raise Exception('Maximum Balance is 90')
+            raise RuntimeError('Maximum Balance is 90')
         self.balance += amount
 
     def deduct(self, amount):
@@ -25,7 +24,9 @@ class Oystercard(object):
         self.balance -= amount
 
     def touch_in(self):
-        """Changes the value of isin_journey to True"""
+        """Changes the value of isin_journey to True, fails if current balance is below 1"""
+        if self.balance < self.MINIMUM_BALANCE:
+            raise RuntimeError('Minimum Balance to travel is 1')
         self.isin_journey = True
 
     def touch_out(self):

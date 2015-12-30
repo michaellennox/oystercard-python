@@ -23,7 +23,7 @@ class TestUserStories(unittest.TestCase):
         # As a customer
         # I want a maximum limit (of 90) on my card
         self.card.top_up(90)
-        with self.assertRaisesRegexp(Exception, 'Maximum Balance is 90'):
+        with self.assertRaisesRegexp(RuntimeError, 'Maximum Balance is 90'):
             self.card.top_up(1)
 
     def test_card_should_be_able_to_be_charged_with_deduct(self):
@@ -38,8 +38,16 @@ class TestUserStories(unittest.TestCase):
         # In order to get through the barriers.
         # As a customer
         # I need to touch in and out.
+        self.card.top_up(10)
         self.assertFalse(self.card.isin_journey)
         self.card.touch_in()
         self.assertTrue(self.card.isin_journey)
         self.card.touch_out()
         self.assertFalse(self.card.isin_journey)
+
+    def test_should_not_be_able_to_touch_in_if_balance_is_below_1(self):
+        # In order to pay for my journey
+        # As a customer
+        # I need to have the minimum amount (1) for a single journey.
+        with self.assertRaisesRegexp(RuntimeError, 'Minimum Balance to travel is 1'):
+            self.card.touch_in()
