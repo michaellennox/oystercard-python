@@ -14,6 +14,9 @@ class TestOystercard(unittest.TestCase):
     def test_isin_journey_should_be_false_before_card_is_used(self):
         self.assertFalse(self.card.isin_journey)
 
+    def test_journey_history_should_start_empty(self):
+        self.assertEqual(self.card.journey_history, [])
+
     def test_entry_station_should_be_None_at_initialization(self):
         self.assertIsNone(self.card.entry_station)
 
@@ -47,11 +50,18 @@ class TestOystercard(unittest.TestCase):
     def test_touch_out_should_change_isin_journey_to_false(self):
         self.card.top_up(5)
         self.card.touch_in(self.mock_station)
-        self.card.touch_out()
+        self.card.touch_out(self.mock_station)
         self.assertFalse(self.card.isin_journey)
 
     def test_touch_out_should_reduce_balance(self):
         self.card.top_up(10)
         self.card.touch_in(self.mock_station)
-        self.card.touch_out()
+        self.card.touch_out(self.mock_station)
         self.assertEqual(self.card.balance, 10 - Oystercard.MINIMUM_FARE)
+
+    def test_touch_out_should_add_entry_and_exit_stations_to_journey_history(self):
+        self.card.top_up(10)
+        self.card.touch_in(self.mock_station)
+        self.card.touch_out(self.mock_station)
+        journey_dict = {'entry_station': self.mock_station, 'exit_station': self.mock_station}
+        self.assertIn(journey_dict, self.card.journey_history)

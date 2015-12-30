@@ -6,6 +6,7 @@ class TestUserStories(unittest.TestCase):
     def setUp(self):
         self.card = Oystercard()
         self.moorgate = Station('Moorgate')
+        self.liverpool_st = Station('Liverpool St.')
 
     def test_card_should_track_balance(self):
         # In order to use public transport
@@ -44,7 +45,7 @@ class TestUserStories(unittest.TestCase):
         self.assertFalse(self.card.isin_journey)
         self.card.touch_in(self.moorgate)
         self.assertTrue(self.card.isin_journey)
-        self.card.touch_out()
+        self.card.touch_out(self.liverpool_st)
         self.assertFalse(self.card.isin_journey)
 
     def test_should_not_be_able_to_touch_in_if_balance_is_below_1(self):
@@ -60,7 +61,7 @@ class TestUserStories(unittest.TestCase):
         # When my journey is complete, I need the correct amount deducted from my card
         self.card.top_up(10)
         self.card.touch_in(self.moorgate)
-        self.card.touch_out()
+        self.card.touch_out(self.liverpool_st)
         self.assertEqual(self.card.balance, 9)
 
     def test_card_should_track_where_it_was_touched_in(self):
@@ -70,3 +71,13 @@ class TestUserStories(unittest.TestCase):
         self.card.top_up(10)
         self.card.touch_in(self.moorgate)
         self.assertEqual(self.card.entry_station, self.moorgate)
+
+    def test_card_should_track_journey_history(self):
+        # In order to know where I have been
+        # As a customer
+        # I want to see to all my previous trips
+        self.card.top_up(10)
+        self.card.touch_in(self.moorgate)
+        self.card.touch_out(self.liverpool_st)
+        journey_dict = {'entry_station': self.moorgate, 'exit_station': self.liverpool_st}
+        self.assertIn(journey_dict, self.card.journey_history)
