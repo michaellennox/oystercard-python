@@ -31,4 +31,5 @@ class Oystercard(object):
 
     def touch_out(self):
         """Changes the value of isin_journey to False"""
+        self.deduct(1)
         self.isin_journey = False

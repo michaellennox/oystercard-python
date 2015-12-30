@@ -51,3 +51,12 @@ class TestUserStories(unittest.TestCase):
         # I need to have the minimum amount (1) for a single journey.
         with self.assertRaisesRegexp(RuntimeError, 'Minimum Balance to travel is 1'):
             self.card.touch_in()
+
+    def test_should_deduct_from_balance_on_touch_out(self):
+        # In order to pay for my journey
+        # As a customer
+        # When my journey is complete, I need the correct amount deducted from my card
+        self.card.top_up(10)
+        self.card.touch_in()
+        self.card.touch_out()
+        self.assertEqual(self.card.balance, 9)

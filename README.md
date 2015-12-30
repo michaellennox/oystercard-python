@@ -2,7 +2,7 @@
 
 This is a repeat of the [oystercard-challenge](https://github.com/makersacademy/course/tree/master/oystercard) written in Python instead of the original Ruby. You can find my original Ruby solution [at this repo](https://github.com/michaellennox/oystercard).
 
-I have aimed to solve this challenge in a test driven manner with automated tests using the pytest package.
+I have aimed to solve this challenge in a test driven manner with automated tests using the unittest library.
 
 ##Installation Instructions
 

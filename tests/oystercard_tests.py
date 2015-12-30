@@ -40,3 +40,9 @@ class TestOystercard(unittest.TestCase):
         self.card.touch_in()
         self.card.touch_out()
         self.assertFalse(self.card.isin_journey)
+
+    def test_touch_out_should_reduce_balance(self):
+        self.card.top_up(10)
+        self.card.touch_in()
+        self.card.touch_out()
+        self.assertEqual(self.card.balance, 9)
