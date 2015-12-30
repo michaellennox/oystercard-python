@@ -3,12 +3,14 @@ class Oystercard(object):
 
     Attributes:
         balance = current working balance of card
+        isin_journey = boolean representing whether the card is currently in journey
     """
 
     MAXIMUM_BALANCE = 90
 
     def __init__(self):
         self.balance = 0
+        self.isin_journey = False
 
     def top_up(self, amount):
         """Adds amount passed as argument to balance.
@@ -19,4 +21,13 @@ class Oystercard(object):
         self.balance += amount
 
     def deduct(self, amount):
+        """Subtracts amount passed as argument from balance."""
         self.balance -= amount
+
+    def touch_in(self):
+        """Changes the value of isin_journey to True"""
+        self.isin_journey = True
+
+    def touch_out(self):
+        """Changes the value of isin_journey to False"""
+        self.isin_journey = False

@@ -22,3 +22,15 @@ class TestOystercard(unittest.TestCase):
         self.card.top_up(10)
         self.card.deduct(5)
         self.assertEqual(self.card.balance, 5)
+
+    def test_isin_journey_should_be_false_before_card_is_used(self):
+        self.assertFalse(self.card.isin_journey)
+
+    def test_touch_in_should_change_isin_journey_to_true(self):
+        self.card.touch_in()
+        self.assertTrue(self.card.isin_journey)
+
+    def test_touch_out_should_change_isin_journey_to_false(self):
+        self.card.touch_in()
+        self.card.touch_out()
+        self.assertFalse(self.card.isin_journey)

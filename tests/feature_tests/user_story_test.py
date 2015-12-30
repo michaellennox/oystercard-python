@@ -33,3 +33,13 @@ class TestUserStories(unittest.TestCase):
         self.card.top_up(10)
         self.card.deduct(5)
         self.assertEqual(self.card.balance, 5)
+
+    def test_card_should_track_whether_in_journey(self):
+        # In order to get through the barriers.
+        # As a customer
+        # I need to touch in and out.
+        self.assertFalse(self.card.isin_journey)
+        self.card.touch_in()
+        self.assertTrue(self.card.isin_journey)
+        self.card.touch_out()
+        self.assertFalse(self.card.isin_journey)
