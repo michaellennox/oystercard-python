@@ -13,7 +13,12 @@ class TestOystercard(unittest.TestCase):
         self.card.top_up(10)
         self.assertEqual(self.card.balance, 10)
 
-    def test_top_up_should_not_allow_balance_higher_than_90(self):
-        self.card.top_up(90)
+    def test_top_up_should_not_allow_balance_higher_than_MAXIMUM_BALANCE(self):
+        self.card.top_up(Oystercard.MAXIMUM_BALANCE)
         with self.assertRaisesRegexp(Exception, 'Maximum Balance is 90'):
             self.card.top_up(1)
+
+    def test_deduct_should_reduce_balance_by_amount_passed_as_argument(self):
+        self.card.top_up(10)
+        self.card.deduct(5)
+        self.assertEqual(self.card.balance, 5)

@@ -25,3 +25,11 @@ class TestUserStories(unittest.TestCase):
         self.card.top_up(90)
         with self.assertRaisesRegexp(Exception, 'Maximum Balance is 90'):
             self.card.top_up(1)
+
+    def test_card_should_be_able_to_be_charged_with_deduct(self):
+        # In order to pay for my journey
+        # As a customer
+        # I need my fare deducted from my card
+        self.card.top_up(10)
+        self.card.deduct(5)
+        self.assertEqual(self.card.balance, 5)

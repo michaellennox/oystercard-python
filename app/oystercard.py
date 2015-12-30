@@ -17,3 +17,6 @@ class Oystercard(object):
         if self.balance + amount > self.MAXIMUM_BALANCE:
             raise Exception('Maximum Balance is 90')
         self.balance += amount
+
+    def deduct(self, amount):
+        self.balance -= amount
