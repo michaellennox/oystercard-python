@@ -5,8 +5,8 @@ from app.station import Station
 class TestUserStories(unittest.TestCase):
     def setUp(self):
         self.card = Oystercard()
-        self.moorgate = Station('Moorgate')
-        self.liverpool_st = Station('Liverpool St.')
+        self.moorgate = Station('Moorgate', 1)
+        self.liverpool_st = Station('Liverpool St.', 1)
 
     def test_card_should_track_balance(self):
         # In order to use public transport
@@ -81,3 +81,9 @@ class TestUserStories(unittest.TestCase):
         self.card.touch_out(self.liverpool_st)
         journey_dict = {'entry_station': self.moorgate, 'exit_station': self.liverpool_st}
         self.assertIn(journey_dict, self.card.journey_history)
+
+    def test_station_should_save_zone(self):
+        # In order to know how far I have travelled
+        # As a customer
+        # I want to know what zone a station is in
+        self.assertEqual(self.moorgate.zone, 1)

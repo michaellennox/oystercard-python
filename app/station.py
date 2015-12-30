@@ -5,5 +5,6 @@ class Station(object):
         name = name of the Station
     """
 
-    def __init__(self, name):
+    def __init__(self, name, zone):
         self.name = name
+        self.zone = zone
