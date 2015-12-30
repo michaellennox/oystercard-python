@@ -1,9 +1,11 @@
 import unittest
 from app.oystercard import Oystercard
+from app.station import Station
 
 class TestUserStories(unittest.TestCase):
     def setUp(self):
         self.card = Oystercard()
+        self.moorgate = Station('Moorgate')
 
     def test_card_should_track_balance(self):
         # In order to use public transport
@@ -31,7 +33,7 @@ class TestUserStories(unittest.TestCase):
         # As a customer
         # I need my fare deducted from my card
         self.card.top_up(10)
-        self.card.deduct(5)
+        self.card._deduct(5)
         self.assertEqual(self.card.balance, 5)
 
     def test_card_should_track_whether_in_journey(self):
@@ -40,7 +42,7 @@ class TestUserStories(unittest.TestCase):
         # I need to touch in and out.
         self.card.top_up(10)
         self.assertFalse(self.card.isin_journey)
-        self.card.touch_in()
+        self.card.touch_in(self.moorgate)
         self.assertTrue(self.card.isin_journey)
         self.card.touch_out()
         self.assertFalse(self.card.isin_journey)
@@ -50,13 +52,21 @@ class TestUserStories(unittest.TestCase):
         # As a customer
         # I need to have the minimum amount (1) for a single journey.
         with self.assertRaisesRegexp(RuntimeError, 'Minimum Balance to travel is 1'):
-            self.card.touch_in()
+            self.card.touch_in(self.moorgate)
 
     def test_should_deduct_from_balance_on_touch_out(self):
         # In order to pay for my journey
         # As a customer
         # When my journey is complete, I need the correct amount deducted from my card
         self.card.top_up(10)
-        self.card.touch_in()
+        self.card.touch_in(self.moorgate)
         self.card.touch_out()
         self.assertEqual(self.card.balance, 9)
+
+    def test_card_should_track_where_it_was_touched_in(self):
+        # In order to pay for my journey
+        # As a customer
+        # I need to know where I've travelled from
+        self.card.top_up(10)
+        self.card.touch_in(self.moorgate)
+        self.assertEqual(self.card.entry_station, self.moorgate)
