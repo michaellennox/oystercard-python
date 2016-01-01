@@ -87,3 +87,16 @@ class TestUserStories(unittest.TestCase):
         # As a customer
         # I want to know what zone a station is in
         self.assertEqual(self.moorgate.zone, 1)
+
+    def test_penalty_fare_should_be_charged_on_incomplete_journey(self):
+        # In order to be charged correctly
+        # As a customer
+        # I need a penalty charge deducted if I fail to touch in or out
+        self.card.top_up(20)
+        self.card.touch_in(self.moorgate)
+        self.card.touch_in(self.liverpool_st)
+        self.assertEqual(self.card.balance, 14)
+        self.card.touch_out(self.moorgate)
+        self.assertEqual(self.card.balance, 13)
+        self.card.touch_out(self.liverpool_st)
+        self.assertEqual(self.card.balance, 7)

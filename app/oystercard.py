@@ -1,3 +1,5 @@
+from journey import Journey
+
 class Oystercard(object):
     """A simulated oystercard
 
@@ -14,9 +16,8 @@ class Oystercard(object):
 
     def __init__(self):
         self.balance = 0
-        self.isin_journey = False
-        self.entry_station = None
         self.journey_history = []
+        self.journey = Journey()
 
     def top_up(self, amount):
         """Adds amount passed as argument to balance, fails if that would take balance over 90"""
